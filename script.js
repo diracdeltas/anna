@@ -1,5 +1,9 @@
-let balloon = document.querySelector(".balloon");
-let win = document.getElementById('win');
+const balloon = document.querySelector(".balloon");
+const win = document.getElementById('win');
+const score = document.getElementById('score');
+const start = Date.now();
+
+let best = localStorage.getItem("best");
 
 function moveBalloon() {
     let randomX = Math.random() * (window.innerWidth - 100);
@@ -10,11 +14,19 @@ function moveBalloon() {
 }
 
 function popBalloon() {
+    const time = Date.now() - start;
     clearInterval(movement);
     balloon.style.display = 'none';
     win.textContent = "🎉 Happy Birthday Anna!!! 🎉";
     win.style.display = 'block';
     cycleBackgroundColors(300);
+    score.style.display = 'block';
+    if (!best || time < best) {
+      best = time;
+      localStorage.setItem('best', time)
+    }
+    document.getElementById('yours').textContent = `Your time: ${time}ms`;
+    document.getElementById('best').textContent = `Best time: ${best}ms`;
 }
 
 function generateRandomColor() {
@@ -31,4 +43,4 @@ function cycleBackgroundColors(intervalTime = 2000) {
 }
 
 
-let movement = setInterval(moveBalloon, 750);
+let movement = setInterval(moveBalloon, 666);
